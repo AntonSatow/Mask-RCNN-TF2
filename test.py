@@ -61,7 +61,7 @@ model = mrcnn.model.MaskRCNN(mode="inference",
 #url = "rtsp://169.254.23.163/avc/"
 #url = "rtsp://169.254.23.163/mjpg/"
 
-IP = "169.254.178.152" #Replace with current IP
+IP = "169.254.93.52" #Replace with current IP
 
 urls = [
     "rtsp://" + IP + "/avc/ch1",
@@ -84,8 +84,9 @@ def start_vid_capt(url):
     ret, frame = cap.read()
     
     #sharpening the image
-    kernel = np.array([[0,-1,0], [-1,5,-1], [0,-1,0]])
+    kernel = np.array([[0,-1,0], [-1,9,-1], [0,-1,0]])
     frame = cv.filter2D(frame, -1, kernel)
+    
     
     if(labels is not None and squares is not None):
       frame_det, (startX, startY), (endX, endY), color, thickness = squares
@@ -94,7 +95,6 @@ def start_vid_capt(url):
     cv.imshow('Video Stream', frame)
     # Press Q on keyboard to  exit
     if cv.waitKey(15) & 0xFF == ord('q') | ret:
-      exit()
       break
   cap.release()
  
