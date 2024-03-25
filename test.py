@@ -61,12 +61,9 @@ model = mrcnn.model.MaskRCNN(mode="inference",
 #url = "rtsp://169.254.23.163/avc/"
 #url = "rtsp://169.254.23.163/mjpg/"
 
-IP = "169.254.238.109"
+IP = "169.254.178.152" #Replace with current IP
 
 urls = [
-    "rtsp://" + IP + "/avc/ch0",
-    "rtsp://" + IP + "/mjpg/ch0",
-    "rtsp://" + IP + "/mpeg4/ch0",
     "rtsp://" + IP + "/avc/ch1",
     "rtsp://" + IP + "/mjpg/ch1",
     "rtsp://" + IP + "/mpeg4/ch1",
@@ -122,7 +119,7 @@ while True:
     
     for i in range(0, r["rois"].shape[0]):
         (startY, startX, endY, endX) = r["rois"][i]
-        #labels = CLASS_NAMES[r["class_ids"][i]]
+        labels = CLASS_NAMES[r["class_ids"][i]]
         squares = frame_det,(startX, startY), (endX, endY), (0, 255, 0), 2
           
 cv.destroyAllWindows()
