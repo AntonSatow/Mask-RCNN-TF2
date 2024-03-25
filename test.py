@@ -82,6 +82,11 @@ def start_vid_capt(url):
   cap = cv.VideoCapture(url)
   while True:
     ret, frame = cap.read()
+    
+    #sharpening the image
+    kernel = np.array([[0,-1,0], [-1,5,-1], [0,-1,0]])
+    frame = cv.filter2D(frame, -1, kernel)
+    
     if(labels is not None and squares is not None):
       frame_det, (startX, startY), (endX, endY), color, thickness = squares
       cv.rectangle(frame, (startX, startY), (endX, endY), color, thickness)
@@ -89,6 +94,7 @@ def start_vid_capt(url):
     cv.imshow('Video Stream', frame)
     # Press Q on keyboard to  exit
     if cv.waitKey(15) & 0xFF == ord('q') | ret:
+      exit()
       break
   cap.release()
  
