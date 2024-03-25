@@ -43,7 +43,7 @@ class SimpleConfig(mrcnn.config.Config):
 	# Number of classes = number of classes + 1 (+1 for the background). The background class is named BG
     NUM_CLASSES = len(CLASS_NAMES)
     
-    USE_MINI_MASK = False
+    USE_MINI_MASK = True
     
 # Initialize the Mask R-CNN model for inference and then load the weights.
 # This step builds the Keras model architecture.
