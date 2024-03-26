@@ -7,6 +7,8 @@ import mrcnn.visualize
 import cv2 as cv
 import os
 import threading
+import openpyxl
+from openpyxl import Workbook
 
 import tkinter as tk
 from functools import partial
@@ -97,6 +99,20 @@ def start_vid_capt(url):
     #kernel = np.array([[0,-1,0], [-1,9,-1], [0,-1,0]])
     #frame = cv.filter2D(frame, -1, kernel)
     
+    #frame = cv.resize(frame, (640, 480))
+    #Testing
+    #write frame to excel sheet, starting at B1 for testing
+    #frame = cv.cvtColor(frame, cv.COLOR_BGR2RGB)
+    #workbook = Workbook()
+    #sheet = workbook.active
+    
+    #for i in range(len(frame)):
+        #for j in range(len(frame[i])):
+            #rgb_str = str(frame[i][j][0]) + "," + str(frame[i][j][1]) + "," + str(frame[i][j][2])
+            #sheet.cell(row = i + 1, column = j+2, value = rgb_str)
+    #workbook.save("test.xlsx")
+    #exit_flag.set()
+    #break
     
     if(labels is not None and squares is not None):
       for square in squares:
