@@ -12,6 +12,16 @@ import tkinter as tk
 from functools import partial
 
 
+class Flag:
+    def __init__(self):
+        self._flag = False
+
+    def set(self):
+        self._flag = True
+
+    def is_set(self):
+        return self._flag
+
 # load the class label names from disk, one label per line
 # CLASS_NAMES = open("coco_labels.txt").read().strip().split("\n")
 
@@ -96,8 +106,8 @@ def start_vid_capt(url):
     cv.imshow('Video Stream', frame)
     # Press Q on keyboard to  exit
     if cv.waitKey(15) & 0xFF == ord('q') | ret:
-      break
-  cap.release()
+      exit_flag.set()
+      cap.release()
  
 def on_button_click(url):
     threading.Thread(target=start_vid_capt, args=(url,), daemon=True).start()
@@ -110,12 +120,10 @@ for url in urls:
     button.pack()
 
 root.mainloop()
-
+exit_flag = Flag() # Flag to stop the thread
 # Load the weights into the model.
 model.load_weights(filepath="mask_rcnn_coco.h5", 
                     by_name=True)
-
-
 
 while True:
   if frame is not None:
@@ -130,5 +138,6 @@ while True:
         (startY, startX, endY, endX) = r["rois"][i]
         labels = CLASS_NAMES[r["class_ids"][i]]
         squares[i] = frame_det,(startX, startY), (endX, endY), (0, 255, 0), 2
-          
+  if(exit_flag.is_set()):
+    break    
 cv.destroyAllWindows()
