@@ -84,14 +84,15 @@ def start_vid_capt(url):
     ret, frame = cap.read()
     
     #sharpening the image
-    kernel = np.array([[0,-1,0], [-1,9,-1], [0,-1,0]])
-    frame = cv.filter2D(frame, -1, kernel)
+    #kernel = np.array([[0,-1,0], [-1,9,-1], [0,-1,0]])
+    #frame = cv.filter2D(frame, -1, kernel)
     
     
     if(labels is not None and squares is not None):
-      frame_det, (startX, startY), (endX, endY), color, thickness = squares
-      cv.rectangle(frame, (startX, startY), (endX, endY), color, thickness)
-      cv.putText(frame, labels, (startX, startY - 10), cv.FONT_HERSHEY_SIMPLEX, 0.9, color, 2)
+      for square in squares:
+        frame_det, (startX, startY), (endX, endY), color, thickness = square
+        cv.rectangle(frame, (startX, startY), (endX, endY), color, thickness)
+        cv.putText(frame, labels, (startX, startY - 10), cv.FONT_HERSHEY_SIMPLEX, 0.9, color, 2)
     cv.imshow('Video Stream', frame)
     # Press Q on keyboard to  exit
     if cv.waitKey(15) & 0xFF == ord('q') | ret:
@@ -115,6 +116,7 @@ model.load_weights(filepath="mask_rcnn_coco.h5",
                     by_name=True)
 
 
+
 while True:
   if frame is not None:
     # Perform a forward pass of the network to obtain the results
@@ -122,10 +124,11 @@ while True:
 
     # Get the results for the first image.
     r = r[0]
-    
+    squares = [None] * r["rois"].shape[0]
+  
     for i in range(0, r["rois"].shape[0]):
         (startY, startX, endY, endX) = r["rois"][i]
         labels = CLASS_NAMES[r["class_ids"][i]]
-        squares = frame_det,(startX, startY), (endX, endY), (0, 255, 0), 2
+        squares[i] = frame_det,(startX, startY), (endX, endY), (0, 255, 0), 2
           
 cv.destroyAllWindows()
