@@ -73,7 +73,7 @@ model = mrcnn.model.MaskRCNN(mode="inference",
 #url = "rtsp://169.254.23.163/avc/"
 #url = "rtsp://169.254.23.163/mjpg/"
 
-IP = "169.254.93.52" #Replace with current IP
+IP = "169.254.131.172" #Replace with current IP
 
 urls = [
     "rtsp://" + IP + "/avc/ch1",
@@ -91,6 +91,7 @@ squares = None
 
 def start_vid_capt(url):
   global frame
+  counter = 0
   cap = cv.VideoCapture(url)
   while True:
     ret, frame = cap.read()
@@ -120,6 +121,10 @@ def start_vid_capt(url):
         cv.rectangle(frame, (startX, startY), (endX, endY), color, thickness)
         cv.putText(frame, labels, (startX, startY - 10), cv.FONT_HERSHEY_SIMPLEX, 0.9, color, 2)
     cv.imshow('Video Stream', frame)
+    cv.imwrite(str(counter) + "frame.jpg", frame)
+    counter += 1
+    if counter == 10:
+        break
     # Press Q on keyboard to  exit
     if cv.waitKey(15) & 0xFF == ord('q') | ret:
       exit_flag.set()
