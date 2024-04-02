@@ -7,8 +7,6 @@ import mrcnn.visualize
 import cv2 as cv
 import os
 import threading
-import openpyxl
-from openpyxl import Workbook
 
 import tkinter as tk
 from functools import partial
@@ -63,17 +61,7 @@ model = mrcnn.model.MaskRCNN(mode="inference",
                                 config=SimpleConfig(),
                                 model_dir=os.getcwd())
 
-#url = "rtsp://169.254.23.163/mpeg4/ch0"
-#url = "rtsp://169.254.23.163/avc/ch0"
-#url = "rtsp://169.254.23.163/mjpg/ch0"
-#url = "rtsp://169.254.23.163/mpeg4/ch1"
-#url = "rtsp://169.254.23.163/avc/ch1"
-#url = "rtsp://169.254.23.163/mjpg/ch1"
-#url = "rtsp://169.254.23.163/mpeg4/"
-#url = "rtsp://169.254.23.163/avc/"
-#url = "rtsp://169.254.23.163/mjpg/"
-
-IP = "169.254.131.172" #Replace with current IP
+IP = "169.254.233.177" #Replace with current IP
 
 urls = [
     "rtsp://" + IP + "/avc/ch1",
@@ -84,6 +72,7 @@ urls = [
     "rtsp://" + IP + "/mjpg/",
     0
 ]
+
 frame = None
 frame_det = None
 labels = None
@@ -91,40 +80,19 @@ squares = None
 
 def start_vid_capt(url):
   global frame
-  counter = 0
   cap = cv.VideoCapture(url)
   while True:
     ret, frame = cap.read()
-    
-    #sharpening the image
-    #kernel = np.array([[0,-1,0], [-1,9,-1], [0,-1,0]])
-    #frame = cv.filter2D(frame, -1, kernel)
-    
-    #frame = cv.resize(frame, (640, 480))
-    #Testing
-    #write frame to excel sheet, starting at B1 for testing
-    #frame = cv.cvtColor(frame, cv.COLOR_BGR2RGB)
-    #workbook = Workbook()
-    #sheet = workbook.active
-    
-    #for i in range(len(frame)):
-        #for j in range(len(frame[i])):
-            #rgb_str = str(frame[i][j][0]) + "," + str(frame[i][j][1]) + "," + str(frame[i][j][2])
-            #sheet.cell(row = i + 1, column = j+2, value = rgb_str)
-    #workbook.save("test.xlsx")
-    #exit_flag.set()
-    #break
     
     if(labels is not None and squares is not None):
       for square in squares:
         frame_det, (startX, startY), (endX, endY), color, thickness = square
         cv.rectangle(frame, (startX, startY), (endX, endY), color, thickness)
         cv.putText(frame, labels, (startX, startY - 10), cv.FONT_HERSHEY_SIMPLEX, 0.9, color, 2)
-    cv.imshow('Video Stream', frame)
-    cv.imwrite(str(counter) + "frame.jpg", frame)
-    counter += 1
-    if counter == 10:
-        break
+        
+    if frame is not None:
+        cv.imshow('Video Stream', frame)
+    
     # Press Q on keyboard to  exit
     if cv.waitKey(15) & 0xFF == ord('q') | ret:
       exit_flag.set()
