@@ -7,6 +7,7 @@ import mrcnn.visualize
 import cv2 as cv
 import os
 import threading
+import requests
 
 import tkinter as tk
 from functools import partial
@@ -70,6 +71,7 @@ urls = [
     "rtsp://" + IP + "/mpeg4/",
     "rtsp://" + IP + "/avc/",
     "rtsp://" + IP + "/mjpg/",
+    "rtsp://" + IP + "/bundles/userweb/img/set.svg#spot-white",
     0
 ]
 
