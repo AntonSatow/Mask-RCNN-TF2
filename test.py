@@ -51,6 +51,7 @@ class SimpleConfig(mrcnn.config.Config):
     GPU_COUNT = 1
     IMAGES_PER_GPU = 1
 
+
 	# Number of classes = number of classes + 1 (+1 for the background). The background class is named BG
     NUM_CLASSES = len(CLASS_NAMES)
     
@@ -62,7 +63,7 @@ model = mrcnn.model.MaskRCNN(mode="inference",
                                 config=SimpleConfig(),
                                 model_dir=os.getcwd())
 
-IP = "169.254.215.104" #Replace with current IP
+IP = "169.254.53.129" #Replace with current IP
 
 urls = [
     "rtsp://" + IP + "/avc/ch1",
@@ -82,8 +83,9 @@ squares = None
 
 def start_vid_capt(url):
   global frame
-  i = 0
+  i = 45
   cap = cv.VideoCapture(url)
+
   while True:
     ret, frame = cap.read()
     frame = cv.resize(frame, (1024, 768))
@@ -97,9 +99,9 @@ def start_vid_capt(url):
         cv.imshow('Video Stream', frame)
     
     # Press C on keyboard to save Image
-    if 0xFF == ord('c') | ret:
-        i += 1
+    if cv.waitKey(1) & 0xFF == ord('c') | ret:
         cv.imwrite(str(i) + '_frame.jpg', frame)
+        i += 1
         
     # Press Q on keyboard to  exit
     if 0xFF == ord('q') | ret:
