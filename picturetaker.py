@@ -18,7 +18,8 @@ i = 0
 while True:
     cap, frame = cv.read()
     if frame is not None:
-        cv.imshow('Video Stream', frame)
+        frame_rezise = cv.resize (frame, (1024, 768))
+        cv.imshow('Video Stream', frame_rezise)
         
         
     # Press C on keyboard to save Image
