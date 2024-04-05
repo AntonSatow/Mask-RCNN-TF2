@@ -5,25 +5,24 @@ import openpyxl
 from openpyxl import Workbook
 
 
-#original_image = cv.imread("test_img.png")
-original_image = cv.imread("5frame.jpg")
-resize_image = cv.resize(original_image, (4040, 2020))
+original_image = cv.imread("19_frame.jpg")
+resize_image = cv.resize(original_image, (1024, 768))
 
-print(original_image)
-#Testing
-# #write frame to excel sheet, starting at B1 for testing
-original_image = cv.cvtColor(original_image, cv.COLOR_BGR2RGB)
-workbook = openpyxl.Workbook()
-sheet = workbook.active
-print(len(original_image))
-for i in range(len(original_image)):
-    for j in range(len(original_image[i])):
-        rgb_str = str(original_image[i][j][0]) + "," + str(original_image[i][j][1]) + "," + str(original_image[i][j][2])
-        sheet.cell(row = i + 1, column = j+2, value = rgb_str)
-workbook.save("test.xlsx")
-    
-#exit program           
-quit()    
+#bilateral_blur = cv.bilateralFilter(resize_image, 9, 75, 75)
+
+#grey_image = cv.cvtColor(resize_image, cv.COLOR_BGR2GRAY)
+hist = cv.calcHist([resize_image], [0], None, [256], [0, 256])
+
+spike = np.argmax(hist)
+mask = resize_image == spike
+resize_image[mask] = [0, 0, 255]
+
+while True:
+    #side_by_side = np.hstack((resize_image, bilateral_blur))
+    cv.imshow("Original Image vs Gaussian Blur", resize_image)
+    if cv.waitKey(1) & 0xFF == ord('q'):
+        break
+
 
 #image = original_image.copy()
 

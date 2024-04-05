@@ -63,16 +63,20 @@ model = mrcnn.model.MaskRCNN(mode="inference",
                                 config=SimpleConfig(),
                                 model_dir=os.getcwd())
 
-IP = "169.254.53.129" #Replace with current IP
+username = "admin"
+user = "user"
+password = "OWhuZ2"
+password_wifi = "FODCamera"
+IP = "192.168.16.1" #Replace with current IP
+
 
 urls = [
     "rtsp://" + IP + "/avc/ch1",
     "rtsp://" + IP + "/mjpg/ch1",
     "rtsp://" + IP + "/mpeg4/ch1",
-    "rtsp://" + IP + "/mpeg4/",
+    f"rtsp://{IP}/mpeg4/",
     "rtsp://" + IP + "/avc/",
     "rtsp://" + IP + "/mjpg/",
-    "rtsp://" + IP + "/bundles/userweb/img/set.svg#spot-white",
     0
 ]
 
