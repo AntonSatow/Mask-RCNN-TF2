@@ -65,8 +65,8 @@ password = "OWhuZ2"
 password_wifi = "FODCamera"
 IP = "192.168.16.1" #Replace with current IP
 
-url = 0 #Own camera
-#url = "192.168.16.1" + f"rtsp://{IP}/mpeg4/" #Camera Stream URL
+#url = 0 #Own camera
+url = f"rtsp://{IP}/mpeg4/" #Camera Stream URL
 
 frame = None
 frame_det = None

@@ -12,22 +12,22 @@ urls = [
     "rtsp://" + IP + "/mjpg/",
     0
 ]
-url = "192.168.16.1" + f"rtsp://{IP}/mpeg4/"
+url = f"rtsp://{IP}/mpeg4/"
 cap = cv.VideoCapture(url)
 i = 0
 while True:
-    cap, frame = cv.read()
+    ret, frame = cap.read()
     if frame is not None:
         frame_rezise = cv.resize (frame, (1024, 768))
         cv.imshow('Video Stream', frame_rezise)
         
         
     # Press C on keyboard to save Image
-    if cv.waitKey(0) & 0xFF == ord('c'):
-        cv.imwrite(str(i) + '_screwdriver_frame.jpg', frame)
+    if cv.waitKey(1) & 0xFF == ord('c'):
+        cv.imwrite('FOD_4m' + str(i) + '_.jpg', frame)
         i += 1
         
     # Press Q on keyboard to  exit
-    if cv.watiKey(0) & 0xFF == ord('q'):
+    if cv.waitKey(1) & 0xFF == ord('q'):
       cap.release()
       break
