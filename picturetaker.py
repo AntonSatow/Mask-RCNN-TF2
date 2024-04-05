@@ -17,7 +17,10 @@ cap = cv.VideoCapture(url)
 i = 0
 while True:
     cap, frame = cv.read()
-    
+    if frame is not None:
+        cv.imshow('Video Stream', frame)
+        
+        
     # Press C on keyboard to save Image
     if cv.waitKey(0) & 0xFF == ord('c'):
         cv.imwrite(str(i) + '_screwdriver_frame.jpg', frame)

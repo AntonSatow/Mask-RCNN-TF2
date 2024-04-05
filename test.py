@@ -65,7 +65,8 @@ password = "OWhuZ2"
 password_wifi = "FODCamera"
 IP = "192.168.16.1" #Replace with current IP
 
-url = "192.168.16.1" + f"rtsp://{IP}/mpeg4/" #Camera Stream URL
+url = 0 #Own camera
+#url = "192.168.16.1" + f"rtsp://{IP}/mpeg4/" #Camera Stream URL
 
 frame = None
 frame_det = None
@@ -95,7 +96,7 @@ def start_vid_capt():
         i += 1
         
     # Press Q on keyboard to  exit
-    if 0xFF == ord('q') | ret:
+    if cv.waitKey(1) & 0xFF == ord('q') | ret:
       exit_flag.set()
       cap.release()
  
@@ -103,7 +104,7 @@ def start_vid_capt():
 
 
 #Start new thread, to capture video stream.
-threading.Thread(target=start_vid_capt, args=(url,), daemon=True).start()
+threading.Thread(target=start_vid_capt, daemon=True).start()
 exit_flag = Flag() # Flag to stop the thread
 # Load the weights into the model.
 model.load_weights(filepath="mask_rcnn_coco.h5", 
