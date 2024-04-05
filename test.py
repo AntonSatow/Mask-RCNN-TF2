@@ -9,10 +9,6 @@ import os
 import threading
 import requests
 
-import tkinter as tk
-from functools import partial
-
-
 class Flag:
     def __init__(self):
         self._flag = False
@@ -69,23 +65,14 @@ password = "OWhuZ2"
 password_wifi = "FODCamera"
 IP = "192.168.16.1" #Replace with current IP
 
-
-urls = [
-    "rtsp://" + IP + "/avc/ch1",
-    "rtsp://" + IP + "/mjpg/ch1",
-    "rtsp://" + IP + "/mpeg4/ch1",
-    f"rtsp://{IP}/mpeg4/",
-    "rtsp://" + IP + "/avc/",
-    "rtsp://" + IP + "/mjpg/",
-    0
-]
+url = "192.168.16.1" + f"rtsp://{IP}/mpeg4/" #Camera Stream URL
 
 frame = None
 frame_det = None
 labels = None
 squares = None
 
-def start_vid_capt(url):
+def start_vid_capt():
   global frame
   i = 45
   cap = cv.VideoCapture(url)
@@ -112,17 +99,11 @@ def start_vid_capt(url):
       exit_flag.set()
       cap.release()
  
-def on_button_click(url):
-    threading.Thread(target=start_vid_capt, args=(url,), daemon=True).start()
-    root.destroy()
 
-root = tk.Tk()
 
-for url in urls:
-    button = tk.Button(root, text=url, command=lambda url=url: on_button_click(url))
-    button.pack()
 
-root.mainloop()
+#Start new thread, to capture video stream.
+threading.Thread(target=start_vid_capt, args=(url,), daemon=True).start()
 exit_flag = Flag() # Flag to stop the thread
 # Load the weights into the model.
 model.load_weights(filepath="mask_rcnn_coco.h5", 
